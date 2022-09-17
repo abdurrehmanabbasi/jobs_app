@@ -1,5 +1,5 @@
 import User from '../models/user.model.js'
-export const createJob=(req,res)=>{
+export const createJob=(req,res,next)=>{
     const user = new User({
         fullname:req.body.fullname,
         email:req.body.email,
@@ -7,7 +7,8 @@ export const createJob=(req,res)=>{
     })
     User.create(user, (err,data)=>{
         if(err){
-            res.status(500).json({msg:err})
+            err.code=1062
+            next(err)
         }else{
             res.send(data)
         }
